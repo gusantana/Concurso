@@ -2,11 +2,11 @@
 
 class Produto {
     
-    protected $id_produto;
+    public $id_produto;
     
-    protected $codigo;
+    public $codigo;
     
-    protected $descricao;
+    public $descricao;
     
-    protected $preco;
+    public $preco;
 }

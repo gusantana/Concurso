@@ -1,6 +1,7 @@
 <?php 
 
 require_once "../Model/Produto.php";
+require_once "../Model/ProdutoDAO.php";
 require_once "../Model/ConnectionManager.php";
 
 
@@ -18,19 +19,22 @@ class Index {
     {
         $acao = $this->dados['acao'];
         unset($this->dados['acao']);
-        $this->{$acao}();
+        if (method_exists ($this, $acao)) {
+            $this->{$acao}();
+        }
     }
     
     public function salvar ()
     {
         $produto = new Produto();
+        $produto->id_produto = $this->dados['id_produto'];
         $produto->codigo    = $this->dados['codigo'];
         $produto->descricao = $this->dados['descricao'];
         $produto->preco     = $this->dados['preco'];
         
         $dao = new ProdutoDAO();
         $dao->salvar($produto);
-        
+        header("Location: /concurso/edit.php?id={$produto->id_produto}");
     }
     
 }
