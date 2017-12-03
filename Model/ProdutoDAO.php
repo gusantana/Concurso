@@ -4,7 +4,7 @@ require_once "ProdutoDAO.php";
 
 class ProdutoDAO {
     
-    public function consultar ($filtro)
+    public function consultar ($filtro = [])
     {
         $con = new ConnectionManager();
         $separador = "";
@@ -20,6 +20,12 @@ class ProdutoDAO {
                 FROM produto
                 ";
         
+        if (isset($filtro['id_produto'])) {
+            $where .= " $separador id_produto = :id_produto";
+            $parametros[':id_produto'] = $filtro['id_produto'];
+            $separador = "AND";
+        }
+
         if (isset($filtro['codigo'])) {
             $where .= " $separador codigo = :codigo";
             $parametros[':codigo'] = $filtro['codigo'];
@@ -68,11 +74,32 @@ class ProdutoDAO {
             $sql = "UPDATE produto set codigo = :codigo, descricao = :descricao, preco = :preco WHERE id_produto = :id_produto";
             $parametros['id_produto'] = $produto->id_produto;
         }
-        
+
         $stmt = $con->prepare($sql);
 
         $stmt->execute($parametros);
 
-        return true;
+        $id = $con->lastInsertId('');
+
+        if (! empty((int) $id)) {
+            $produto->id_produto = $id;
+        }
+
+        return $produto;
+    }
+
+
+    public function excluir (Produto $produto)
+    {
+        $con = new ConnectionManager ();
+        $sql = "DELETE FROM produto WHERE id_produto = :id_produto";
+
+        $parametros = [
+            ":id_produto"   => $produto->id_produto
+        ];
+
+        $stmt = $con->prepare($sql);
+
+        return $stmt->execute($parametros);
     }
 }

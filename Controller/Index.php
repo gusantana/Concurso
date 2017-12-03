@@ -1,8 +1,8 @@
 <?php 
 
-require_once "../Model/Produto.php";
-require_once "../Model/ProdutoDAO.php";
-require_once "../Model/ConnectionManager.php";
+require_once "Model/Produto.php";
+require_once "Model/ProdutoDAO.php";
+require_once "Model/ConnectionManager.php";
 
 
 class Index {
@@ -33,10 +33,20 @@ class Index {
         $produto->preco     = $this->dados['preco'];
         
         $dao = new ProdutoDAO();
-        $dao->salvar($produto);
+        $produto = $dao->salvar($produto);
         header("Location: /concurso/edit.php?id={$produto->id_produto}");
     }
     
+    public function excluir ()
+    {
+        $produto = new Produto();
+        $produto->id_produto = $this->dados['id_produto'];
+        
+        $dao = new ProdutoDAO();
+        $produto = $dao->excluir($produto);
+        $_POST = [];
+        header("Location: /concurso/index.php");
+    }
 }
 
 (new Index())->executarAcao();

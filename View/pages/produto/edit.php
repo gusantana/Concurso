@@ -1,5 +1,5 @@
 <?php
-var_dump($produto);
+
 ?>
 <!DOCTYPE>
 <html>
@@ -15,8 +15,16 @@ var_dump($produto);
 	<fieldset>
 		<legend>
 			<span>Cadastro de produtos</span>
-		</legend>
-		<form action="Controller/Index.php" method="post" id="form">
+        </legend>
+        <a href="/concurso/index.php">
+            <button type="button" value="Voltar">Voltar</button>
+        </a>
+        <form action="/concurso/edit.php" method="post">
+            <input type="hidden" name='acao' value='excluir'>
+            <input type="hidden" name='id_produto' value="<?php echo $produto->id_produto ?>">
+            <button type="submit">Excluir</button>
+        </form>
+		<form action="/concurso/edit.php" method="post" id="form">
             <input type="hidden" name="acao" value="salvar">
             <input type="hidden" name='id_produto' value="<?php echo $produto->id_produto ?>">
 
@@ -46,7 +54,7 @@ var_dump($produto);
 			
 			<div>
 				<label for="enviar">&nbsp;</label>
-				<input id="enviar" type="submit" value="Cadastrar">
+				<input id="enviar" type="submit" value="Salvar">
 			</div>
 			
 		</form>
